@@ -2,14 +2,21 @@ import numpy as np
 
 # Datos de entrada y salidas esperadas para OR
 X = np.array([
+    [20, 35],
+    [55, 40],
+    [10, 65],
+    [70, 80],
+    [49, 59],
+    [51, 61],
+    [50, 30],
+    [30, 70],
     [0, 0],
-    [0, 1],
-    [1, 0],
-    [1, 1]
+    [50, 60],
+    [45, 50]
 ])
 
 # salida esperada (OR)
-y = np.array([0, 1, 1, 1])  
+y = np.array([0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0])  
 
 # Inicialización de pesos y bias
 w = np.random.rand(2)
@@ -25,7 +32,9 @@ def step(x):
 for epoch in range(epochs):
     print(f"Epoch {epoch + 1}")
     for i in range(len(X)):
-        xi = X[i]
+        x1 = 0 if X[i][0] < 50 else 1
+        x2 = 0 if X[i][1] < 60 else 1
+        xi = np.array([x1, x2])
         y_pred = step(np.dot(w, xi) + b)
         error = y[i] - y_pred
         
