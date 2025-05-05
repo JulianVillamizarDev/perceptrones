@@ -16,13 +16,14 @@ X = np.array([
 ])
 
 # salida esperada (OR)
-y = np.array([0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0])  
+y = np.array([0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0])
+y_predict = np.zeros_like(y)  
 
 # Inicialización de pesos y bias
 w = np.random.rand(2)
 b = np.random.rand()
 lr = 0.1  # tasa de aprendizaje
-epochs = 20
+epochs = 50
 
 # Función de activación escalón (step)
 def step(x):
@@ -30,11 +31,13 @@ def step(x):
 
 # Entrenamiento
 for epoch in range(epochs):
-    print(f"Epoch {epoch + 1}")
     for i in range(len(X)):
+        # Normalización de entradas
         x1 = 0 if X[i][0] < 50 else 1
         x2 = 0 if X[i][1] < 60 else 1
         xi = np.array([x1, x2])
+
+        # Predicción con las entradas normalizadas
         y_pred = step(np.dot(w, xi) + b)
         error = y[i] - y_pred
         
@@ -42,11 +45,9 @@ for epoch in range(epochs):
         w += lr * error * xi
         b += lr * error
         
-        print(f"Entrada: {xi}, Predicho: {y_pred}, Esperado: {y[i]}, Error: {error}")
-    print("-" * 40)
+        y_predict[i] = y_pred  # Guardar la predicción
 
 # Prueba del perceptrón entrenado
 print("Resultados finales:")
-for xi in X:
-    result = step(np.dot(w, xi) + b)
-    print(f"Entrada: {xi}, Salida: {result}")
+for i in range(X.shape[0]):
+    print(f"Entrada: {X[i]}, Salida: {y_predict[i]}, Esperado: {y[i]}")
